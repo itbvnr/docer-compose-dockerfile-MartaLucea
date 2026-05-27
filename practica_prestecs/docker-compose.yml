@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+
+  c_bd3:
+    image: mariadb:10.6
+    container_name: c_bd3
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: db_dawe
+      MYSQL_USER: user_dawe
+      MYSQL_PASSWORD: pwd
+    volumes:
+      - dades_mysql:/var/lib/mysql
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+    restart: always
+
+  c_web:
+    build: .
+    container_name: c_web
+    ports:
+      - "8080:80"
+    volumes:
+      - ./app:/var/www/html
+    depends_on:
+      - c_bd3
+    restart: always
+
+volumes:
+  dades_mysql:
