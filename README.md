@@ -189,6 +189,8 @@ Dins de la carpeta `practica_prestecs/`, has de configurar l'escenari per a que,
 * **Persistència**: Has d'utilitzar un **Named Volume** (volum amb nom) per a la carpeta `/var/lib/mysql`. D'aquesta manera, encara que s'esborrin els contenidors, els préstecs registrats no es perdran.
 * **Auto-inicialització**: Investiga com fer servir la carpeta `/docker-entrypoint-initdb.d/` de la imatge de MariaDB per a que l'script `db/init.sql` s'executi automàticament en el primer inici. **Explica** Per qué s'ha de fer amb entry point i no es pot fer un COPY de l'script
 
+**Resposta**: El COPY al Dockerfile es fa en temps de build, quan la imatge es construeix, però la base de dades encara no existeix. El directori docker-entrypoint-initdb.d/ s'executa en temps de run, el primer cop que el contenidor arrenca i inicialitza la BD. Per tant, és l'únic moment on té sentit llançar scripts SQL.
+
 #### 2. Servidor WebApp (`c_web`)
 * **Construcció**: No utilitzis una imatge directa. Fes servir la directiva `build` per apuntar al teu `Dockerfile` personalitzat.
 * **Dockerfile**: Recorda que la imatge oficial de PHP no té el connector de Mysql (`mysqli`). L'has d'instal·lar tu mateix.  Investiga pel teu compte com fer-ho
